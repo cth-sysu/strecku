@@ -1,0 +1,59 @@
+<md-list class="md-dense" flex>
+  <md-list-item class="md-3-line" ng-repeat="user in accesses">
+    <md-icon class="md-avatar-icon">person</md-icon>
+    <div class="md-list-item-text">
+      <h3>{{user.name}}</h3>
+      <small>{{user.email}}</small>
+      <p>
+        <small ng-if="user.level == 0"><md-icon class="access-trait">star</md-icon>discount</small>
+        <small ng-if="user.admin"><md-icon class="access-trait">supervisor_account</md-icon>admin</small>
+      </p>
+    </div>
+    <div class="md-secondary">
+      <md-menu md-position-mode="target-right target">
+        <md-button class="md-icon-button md-exclude" ng-click="$mdMenu.open($event)">
+          <md-icon md-menu-origin>more_vert</md-icon>
+        </md-button>
+        <md-menu-content width="2">
+          <md-menu-item>
+            <md-button ng-click="toggleDiscount(user, $event)" class="md-exclude">
+              <md-icon ng-if="!user.level">star_border</md-icon>
+              <md-icon ng-if="user.level">star</md-icon>
+              Toggle discount
+            </md-button>
+          </md-menu-item>
+
+          <!-- <md-menu-item ng-if="user.level">
+            <md-button ng-click="decreaseLevel(user)" class="md-exclude">
+              <md-icon>keyboard_arrow_up</md-icon>
+              Decrease level
+            </md-button>
+          </md-menu-item>
+          
+          <md-menu-item>
+            <md-button ng-click="increaseLevel(user)" class="md-exclude">
+              <md-icon>keyboard_arrow_down</md-icon>
+              Increase level
+            </md-button>
+          </md-menu-item> -->
+          
+          <md-divider></md-divider>
+
+          <md-menu-item>
+            <md-button ng-disabled="user.admin && (accesses|admin).length < 2"
+                ng-click="toggleAdmin(user, $event)" class="md-exclude" aria-label="toggle admin">
+              <md-icon ng-if="user.admin">close</md-icon>
+              <md-icon ng-if="!user.admin">supervisor_account</md-icon>
+              {{user.admin ? 'Revoke' : 'Grant'}} admin role
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-if="!user.admin">
+            <md-button ng-click="remove(user)" class="md-exclude">
+              <md-icon>close</md-icon>Remove user
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </div>
+  </md-list-item>
+</md-list>

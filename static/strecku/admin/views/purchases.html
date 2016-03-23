@@ -1,0 +1,58 @@
+<md-content layout="column" layout-fill ng-cloak>
+  <div layout-margin>
+    <md-autocomplete flex
+        md-selected-item="user"
+        md-selected-item-change="items.filterUser(user)"
+        md-search-text="query"
+        md-items="user in queryUsers(query)"
+        md-item-text="user.name"
+        md-min-length="3"
+        placeholder="User">
+      <md-item-template>
+        <span md-highlight-text="query" md-highlight-flags="^i">{{user.name}}</span>
+        <span class="md-caption">({{user.email}})</span>
+      </md-item-template>
+      <md-not-found>No results for "{{query}}"</md-not-found>
+    </md-autocomplete>
+  </div>
+
+  <md-list-item class="md-table-row-header" flex>
+    <small flex="50">Product</small>
+    <div flex="50" class="align-right" layout>
+      <small flex="20" hide-xs>Amount</small>
+      <small flex="20" hide-gt-xs>Amt.</small>
+      <small flex="30">Total</small>
+      <small flex="50">Time</small>
+    </div>
+  </md-list-item>
+  <md-divider></md-divider>
+
+  <div ng-show="items.length <= 0" flex="grow" layout layout-align="center">
+    <md-progress-circular ng-if="items.length < 0" layout-margin></md-progress-circular>
+    <span ng-if="!items.length" layout-margin>No purchases</span>
+  </div>
+  <md-virtual-repeat-container ng-show="items.length > 0" flex="grow">
+    <md-list class="md-dense">
+      <md-list-item class="md-table-row md-2-line" md-virtual-repeat="purchase in items" md-on-demand md-menu-origin>
+        <div flex="50" class="md-list-item-text">
+          <h3>{{purchase.product.name || purchase.note}}</h3>
+          <p>{{purchase.user.name}}</p>
+        </div>
+        <div flex="50" class="md-list-item-text align-right" layout>
+          <p flex="20">{{purchase.amount}}st</p>
+          <p flex="30">{{purchase.amount * purchase.price | currency:'kr':0 }}</p>
+          <md-menu flex="50">
+            <p>{{purchase.time | dynamicDate}} {{purchase.time | date:'shortTime'}}</p>
+            <md-menu-content width="2">
+              <md-menu-item>
+                <md-button ng-click="delete(purchase)" class="md-exclude">
+                  <md-icon>delete</md-icon>Delete
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-virtual-repeat-container>
+</md-content>

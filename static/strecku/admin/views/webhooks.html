@@ -1,0 +1,23 @@
+<md-list class="md-dense" flex>
+  <md-list-item class="md-3-line" ng-repeat="webhook in webhooks">
+    <div class="md-list-item-text">
+      <h3>{{webhook.name}} <small>({{webhook.action}})</small></h3>
+      <small>{{webhook.url}}</small>
+      <p ng-if="webhook.template">template: {{webhook.template | json}}</p>
+    </div>
+    <div class="md-secondary">
+      <md-menu md-position-mode="target-right target">
+        <md-button class="md-icon-button md-exclude" ng-click="$mdMenu.open($event)">
+          <md-icon md-menu-origin>more_vert</md-icon>
+        </md-button>
+        <md-menu-content width="2">
+          <md-menu-item>
+            <md-button ng-click="remove(webhook)" class="md-exclude">
+              <md-icon>close</md-icon>Remove webhook
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </div>
+  </md-list-item>
+</md-list>

@@ -1,0 +1,48 @@
+<md-dialog>
+  <form name="productForm" novalidate ng-submit="productForm.$valid &&
+      product ? addExisting(product._id, price, discount)
+              : addNew(query, price, discount)">
+    <md-dialog-content class="md-dialog-content">
+      <h3>Add product</h3>
+      <md-autocomplete md-autofocus required
+          md-input-name="product"
+          md-selected-item="product"
+          md-selected-item-change="productForm.product.$setValidity('duplicate', null)"
+          md-search-text="query"
+          md-items="product in queryProducts(query)"
+          md-item-text="productText(product)"
+          md-min-length="2"
+          md-dropdown-position="top"
+          md-floating-label="Product">
+        <md-item-template>
+          <span md-highlight-text="query" md-highlight-flags="^i">
+            {{product.name}}
+          </span>
+          <span ng-show="product.metadata.systembolaget" class="md-caption">
+            - {{product.metadata.systembolaget.Volymiml | volume}} {{product.metadata.systembolaget.Forpackning}} ({{product.metadata.systembolaget.Prisinklmoms + product.metadata.systembolaget.Pant | currency:'kr'}})
+          </span>
+        </md-item-template>
+        <div ng-messages="productForm.product.$error">
+          <div ng-message="duplicate">Product already added</div>
+        </div>
+      </md-autocomplete>
+
+      <md-input-container>
+        <label>Price</label>
+        <input type="number" name="price" ng-model="price" required>
+        <div ng-messages="productForm.price.$error" role="alert">
+          <div ng-message="required">Price required</div>
+        </div>
+      </md-input-container>
+
+      <md-input-container>
+        <label>Discount (%)</label>
+        <input type="number" min="0" max="100" name="discount" ng-model="discount">
+      </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions>
+      <md-button ng-click="cancel()">Cancel</md-button>
+      <md-button type="submit" ng-disabled="!productForm.$valid">Add</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -1,0 +1,9 @@
+md-content {
+  overflow: visible !important;
+}
+md-content[ng-view]>:not(#print), md-toolbar, md-sidenav {
+  display: none !important;
+}
+md-content[ng-view]>#print{
+  display: block;
+}

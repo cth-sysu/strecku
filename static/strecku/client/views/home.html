@@ -1,0 +1,60 @@
+<div ng-if="!stores" layout layout-align="center">
+  <md-progress-circular layout-margin></md-progress-circular>
+</div>
+<div ng-if="stores && stores.length" layout="row" layout-wrap layout-padding>
+  <!-- Store -->
+  <div flex="100" flex-gt-xs="50" ng-init="store = (stores | orderBy:'-purchases.latest')[0]">
+    <h3>{{store.name}}<span class="md-subhead"> - {{store.debt || 0 | currency:'kr':0}}</span></h3>
+    <div ng-controller="StoreProductsCtrl">
+      <div ng-hide="products.length" layout="row" layout-align="center">No products available</div>
+      <md-grid-list md-cols="3" md-cols-gt-md="4" md-row-height="1:1" md-gutter="12px" md-gutter-gt-sm="8px">
+        <md-grid-tile ng-repeat="product in products | limitTo: 4" md-colspan="{{!($index % 3) ? 2 : 1}}" md-colspan-gt-md="2" class="animated" ng-style="{'animation-delay': $index * 25 + 'ms'}">
+          <product-tile class="animated" layout-fill/>
+        </md-grid-tile>
+      </md-grid-list>
+    </div>
+    <div layout layout-align="end">
+      <md-button ng-href="/stores/{{store._id}}">Show more</md-button>
+    </div>
+  </div>
+  <!-- Recent Purchases -->
+  <div flex="100" flex-gt-xs="50">
+    <md-list class="md-dense">
+      <md-subheader class="md-no-sticky">Recent Purchases</md-subheader>
+      <div ng-hide="recentpurchases.length" layout="row" layout-align="center">No purchases</div>
+      <md-list-item class="md-table-row md-2-line animated" ng-repeat="purchase in recentpurchases | orderBy:'time':1 | limitTo:5">
+        <div flex="100" class="md-list-item-text">
+          <h3><b>{{purchase.product.name || purchase.note}}</b><span class="md-caption" ng-if="purchase.amount > 1"> (x{{purchase.amount}})</span class="md-caption"></h3>
+          <p>({{purchase.store.name}})</p>
+        </div>
+        <div class="md-list-item-text" layout="row" layout-align="end">
+          <h3>
+            <span class="md-body-2">{{purchase.amount * purchase.price | currency:'kr':0 }}</span>&emsp;
+            <span class="md-caption">{{purchase.time | dynamicDate}}</span>
+            <span class="md-body-1">{{purchase.time | date:'shortTime'}}</span>
+          </h3>
+        </div>
+      </md-list-item>
+    </md-list>
+    <div layout layout-align="end" ng-show="recentpurchases.length">
+      <md-button ng-href="/purchases">Show more</md-button>
+    </div>
+  </div>
+</div>
+<div ng-if="stores && !stores.length" layout-padding>
+  <div>
+    <h3>Getting Started</h3>
+    <div layout="row" layout-wrap layout-padding>
+      <div flex="100" flex-gt-xs="50" flex-gt-lg="33" flex-offset-gt-lg="15">
+        <h4>1. Instant purchases</h4>
+        <img src="/images/getting_started01.png" style="max-width:100%;max-height:100%;">
+        <p>Tap a product to instantly buy it. Access your most popular ones from the start page or find all available products from the store page.</p>
+      </div>
+      <div flex="100" flex-gt-xs="50" flex-gt-lg="33">
+        <h4>2. Multiple store support</h4>
+        <img src="/images/getting_started02.png" style="max-width:100%;max-height:100%;">
+        <p>StreckU is the home for all stores. Fast access to your most recently used store and your other stores available from the menu.</p>
+      </div>
+    </div>
+  </div>
+</div>

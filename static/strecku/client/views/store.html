@@ -1,0 +1,15 @@
+<div ng-if="store" ng-controller="StoreProductsCtrl" layout-padding>
+  <div>
+    <span class="md-subhead">Debt:</span>
+    <span class="md-title">{{store.debt || 0 | currency:'kr'}}</span>
+  </div>
+
+  <div ng-hide="!products || products.length" layout="row" layout-align="center">
+    <span>No products available</span>
+  </div>
+  <md-grid-list md-cols-xs="3" md-cols="6" md-cols-gt-md="8" md-row-height="1:1" md-gutter="12px" md-gutter-gt-sm="8px">
+    <md-grid-tile ng-repeat="product in products | filter:search.query" md-colspan="{{($index % 4 == 0 || $index % 4 == 3) ? 1 : 2}}" md-colspan-gt-xs="{{($index % 3) ? 1 : 2}}" class="animated" ng-style="{'animation-delay': $index * 25 + 'ms'}">
+      <product-tile class="animated" layout-fill/>
+    </md-grid-tile>
+  </md-grid-list>
+</div>

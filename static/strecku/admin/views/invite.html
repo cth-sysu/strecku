@@ -1,0 +1,15 @@
+<div layout-padding>
+  <form name="inviteForm" novalidate flex="100" flex-gt-sm="50" flex-offset-gt-sm="25"
+      ng-submit="inviteForm.$valid && sendInvite(email)">
+    <md-input-container flex class="md-block">
+      <label>Email</label>
+      <input type="email" name="email" ng-model="email">
+      <div ng-messages="inviteForm.email.$error">
+        <div ng-message="email">Not an email</div>
+      </div>
+    </md-input-container>
+    <div layout="row" layout-align="end">
+      <md-button type="submit" class="md-raised">Send</md-button>
+    </div>
+  </form>
+</div>

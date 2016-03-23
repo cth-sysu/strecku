@@ -1,0 +1,9 @@
+md-sidenav.md-sidenav-right {
+    min-width: 400px;
+}
+.item-image {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+}

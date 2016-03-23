@@ -1,0 +1,10 @@
+<div layout-padding>
+  <p>API. Store token. Send header <code>'Authorization'</code>.</p>
+  <div layout>
+    <md-button class="md-icon-button md-raised" ng-click="copy('textarea')">
+      <md-icon>content_copy</md-icon>
+    </md-button>
+    <input id="textarea" flex="100" name="token" value="{{token}}" readonly>
+  </div>
+  <div ng-bind-html="docs"></div>
+</div>

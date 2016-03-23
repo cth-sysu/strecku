@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <base href="/">
+  <title>StreckU</title>
+
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-animate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-aria.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-messages.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-sanitize.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/i18n/angular-locale_sv-se.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.min.js"></script>
+
+  <!-- StreckU -->
+  <script src="admin.bundle.js"></script>
+
+</head>
+<body ng-app="strecku.admin" layout="column">
+
+  <!-- Toolbar -->
+  <md-toolbar class="md-toolbar-tools md-whiteframe-z1" ng-style="{background: store.metadata.color}" >
+    <md-button class="md-icon-button" ng-click="back(menu.show)">
+      <md-icon>arrow_back</md-icon>
+    </md-button>
+    <h2 flex class="toolbar-title">{{store.name}} settings</h2>
+  </md-toolbar>
+  <md-content flex layout>
+    <!-- Menu -->
+    <md-sidenav id="sidenav" md-is-open="menu.show" md-is-locked-open="$mdMedia('gt-xs')"
+      class="fullwidth" md-whiteframe="4">
+      <md-list ng-controller="MenuCtrl">
+        <md-list-item ng-href="/admin/{{store._id}}/general"
+            ng-click="menu.show = false"
+            ng-class="{ active: active('General') }">
+          <p>General</p>
+        </md-list-item>
+        <md-list-item ng-href="/admin/{{store._id}}/accesses"
+            ng-click="menu.show = false"
+            ng-class="{ active: active('Accesses') }">
+          <p>Accesses</p>
+        </md-list-item>
+        <md-list-item ng-href="/admin/{{store._id}}/products"
+            ng-click="menu.show = false"
+            ng-class="{ active: active('Products') }">
+          <p>Products</p>
+        </md-list-item>
+        <md-list-item ng-href="/admin/{{store._id}}/purchases"
+            ng-click="menu.show = false"
+            ng-class="{ active: active('Purchases') }">
+          <p>Purchases</p>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item ng-href="/admin/{{store._id}}/webhooks"
+            ng-click="menu.show = false"
+            ng-class="{ active: active('Webhooks') }">
+          <p>Webhooks</p>
+        </md-list-item>
+        <md-list-item ng-href="/admin/{{store._id}}/invite"
+            ng-click="menu.show = false"
+            ng-class="{ active: active('Invite') }">
+          <p>User invite</p>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item ng-href="/admin/{{store._id}}/api"
+            ng-click="menu.show = false"
+            ng-class="{ active: active('Api') }">
+          <p>Store API</p>
+        </md-list-item>
+      </md-list>
+    </md-sidenav>
+
+    <!-- View content -->
+    <md-content flex layout="column">
+      <md-content ng-view flex></md-content>
+      <!-- Add action -->
+      <div ng-controller="AddActionCtrl">
+        <md-button ng-show="add.active" class="md-fab md-primary md-fab-bottom-right" ng-click="add.action($event)" aria-label="{{add.label || 'Add'}}">
+          <md-icon>add</md-icon>
+        </md-button>
+      </div>
+    </md-content>
+  </md-content>
+</body>
+</html>
