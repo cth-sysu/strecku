@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="manifest" href="manifest.json">
+  <base href="/">
+  <title>StreckU</title>
+
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+  <link rel="stylesheet" href="//unpkg.com/vue-material/dist/vue-material.css">
+
+  <!-- <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/terminal.css"> -->
+
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/vue-resource@1.3.1/dist/vue-resource.min.js"></script>
+  <script src="https://unpkg.com/vue-material"></script>
+
+  <!-- StreckU -->
+  <!-- <script src="js/app.js"></script>
+  <script src="js/codescanner.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/purchaseslist.js"></script> -->
+</head>
+<body>
+  <div id="app">
+    <md-toolbar>
+      <h1 class="md-title" v-if="store">{{store.name}}</h1>
+    </md-toolbar>
+
+    <div>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, rerum? Error sunt, aperiam dolores, atque expedita molestiae tenetur. Quis eveniet accusamus velit explicabo adipisci reiciendis modi eaque quas, officia excepturi.</p>
+    </div>
+
+    <md-layout md-flex md-gutter md-row>
+      <md-layout md-flex="50" style="background: red;">
+        <span>tjo</span>
+      </md-layout>
+      <md-layout md-flex="50" style="background: yellow;">
+        <span>hej</span>
+      </md-layout>
+    </md-layout>
+
+  </div>
+
+
+<script>
+Vue.use(VueMaterial)
+Vue.material.registerTheme('default', {
+  primary: 'blue-grey'
+})
+var App = new Vue({
+  data: {
+    store: null
+  },
+  el: '#app',
+  created() {
+    this.$http.get('/api/v1/stores/this')
+    .then(res => res.json())
+    .then(store => this.store = store);
+  }
+})
+</script>
+</body>
+</html>
