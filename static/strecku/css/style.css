@@ -42,6 +42,12 @@ md-toolbar md-input-container.md-dark-theme:not(.md-input-invalid).md-input-focu
   color: rgba(255,255,255,0.7);
 }
 
+.swish-link {
+  vertical-align: middle;
+  color: inherit;
+  text-decoration: none;
+}
+
 /* Product tiles */
 md-content[product-image] {
     background-size:100%;

@@ -4,7 +4,13 @@
 <div ng-if="stores && stores.length" layout="row" layout-wrap layout-padding>
   <!-- Store -->
   <div flex="100" flex-gt-xs="50" ng-init="store = (stores | orderBy:'-purchases.latest')[0]">
-    <h3>{{store.name}}<span class="md-subhead"> - {{store.debt || 0 | currency:'kr':0}}</span></h3>
+    <h3>
+      <span>{{store.name}}&nbsp;</span>
+      <a ng-href="swish://payment?data={{swishData(store)}}" class="swish-link">
+        <span class="md-subhead">{{store.debt || 0 | currency:'kr':0}}</span>
+        <md-tooltip md-direction="right" md-visible="payTooltip">← Tap to swish</md-tooltip>
+      </a>
+    </h3>
     <div ng-controller="StoreProductsCtrl">
       <div ng-hide="products.length" layout="row" layout-align="center">No products available</div>
       <md-grid-list md-cols="3" md-cols-gt-md="4" md-row-height="1:1" md-gutter="12px" md-gutter-gt-sm="8px">

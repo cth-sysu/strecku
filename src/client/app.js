@@ -129,11 +129,32 @@ angular.module('strecku.client', [
     .then(() => $http.get('/api/v1/stores'))
     .then(res => ($scope.stores = res.data.stores));
 }])
-.controller('HomeCtrl', ['$scope', '$http', 'Toolbar', function($scope, $http, Toolbar) {
+.controller('HomeCtrl', ['$scope', '$http', '$timeout', 'Toolbar', function($scope, $http, $timeout, Toolbar) {
   $scope.$watch('user', user => user && Toolbar.config(user.name));
   $http.get('/api/v1/purchases?limit=5')
   .then(res => $scope.recentpurchases = res.data.purchases);
   $scope.$on('purchases', (event, purchase) => $scope.recentpurchases.push(purchase));
+  $timeout(() => ($scope.payTooltip = true), 500);
+  $scope.swishData = (store) => {
+    if (!store.metadata.swish) {
+      return '';
+    }
+    return encodeURI(JSON.stringify({
+      version: 1,
+      payee: {
+        value: store.metadata.swish,
+        editable: false
+      },
+      amount: {
+        value: store.debt,
+        editable: false
+      },
+      message: {
+        value: store.name +' streckskuld',
+        editable: true
+      }
+    }));
+  };
 }])
 .controller('StoreProductsCtrl', ['$rootScope', '$scope', '$http', '$mdMedia', '$filter', '$mdDialog', '$mdToast', function($rootScope, $scope, $http, $mdMedia, $filter, $mdDialog, $mdToast) {
   $scope.theme.color = $scope.store.metadata.color;
