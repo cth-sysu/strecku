@@ -246,7 +246,6 @@ api.route('/stores/:id/purchases')
       store: store._id,
       user: access.user,
       [item ? 'product' : 'note']: req.body.product,
-      amount: req.body.amount || 1,
       price: isNaN(price) ? item.price(access.level) : price,
       time: time
     }).save()
@@ -319,7 +318,6 @@ store_admin_api.route('/users')
     } : undefined,
     purchases: entry.count !== undefined ? {
       count: entry.count,
-      products: entry.amount,
       latest: new Date(entry.latest)
     } : undefined
   })))

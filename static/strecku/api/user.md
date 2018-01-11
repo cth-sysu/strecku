@@ -213,7 +213,6 @@ Body:
 | Key | Description |
 | --- | --- |
 | product | Product id |
-| amount | Quantity of the product in this purchase |
 | user | User id (admin only) |
 | price | Custom price (admin only) |
 
@@ -383,6 +382,6 @@ Example template for a Slack-hook:
 ```
 "template" : {
     "icon_emoji" : ":ghost:",
-    "text" : "{{user.name}} bought (x{{amount}}) {{product.name}} <!date^{{time}}^ ({time})| >"
+    "text" : "{{user.name}} bought {{product.name}} <!date^{{time}}^ ({time})| >"
 }
 ```

@@ -225,8 +225,8 @@ describe('Purchases', () => {
       return buymore.save();
     })
     .then(() => Promise.all([
-      new Purchase({store: buymore.id, user: adam.id, product: coffee.id, amount: 1, price: 8, time: yesterday}).save(),
-      new Purchase({store: buymore.id, user: eve.id, product: coffee.id, amount: 2, price: 10}).save(),
+      new Purchase({store: buymore.id, user: adam.id, product: coffee.id, price: 8, time: yesterday}).save(),
+      new Purchase({store: buymore.id, user: eve.id, product: coffee.id, price: 10}).save(),
     ])));
   after(() => clean());
 
@@ -283,11 +283,10 @@ describe('Purchases', () => {
       .send({product: coffee.id, user: adam.id})
       .then(res => {
         expect(res).to.have.status(201);
-        expect(res.body).to.have.all.keys('_id', 'user', 'store', 'product', 'amount', 'price', 'time');
+        expect(res.body).to.have.all.keys('_id', 'user', 'store', 'product', 'price', 'time');
         expect(res.body).to.have.deep.property('store._id', buymore.id);
         expect(res.body).to.have.deep.property('user._id', adam.id);
         expect(res.body).to.have.deep.property('product._id', coffee.id);
-        expect(res.body).to.have.property('amount', 1);
         expect(res.body).to.have.property('price', 2);
         expect(new Date(res.body.time)).to.be.afterDate(yesterday);
         return Purchase.findByIdAndRemove(res.body._id).exec();

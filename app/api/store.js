@@ -109,7 +109,6 @@ api.route('/purchases')
       store: req.store._id,
       user: access.user,
       product: item.product,
-      amount: req.body.amount || 1,
       price: item.price(access.level)
     }).save()
     .then(purchase => Purchase.populate(purchase, {

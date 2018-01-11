@@ -244,12 +244,12 @@ describe('Product & Purchases', () => {
       return store.save();
     })
     .then(() => Promise.all([
-      new Purchase({store: store.id, user: adam.id, product: beer.id, amount: 1, price: 10}).save(),
-      new Purchase({store: store.id, user: adam.id, product: coffee.id, amount: 2, price: 20}).save(),
-      new Purchase({store: store.id, user: eve.id, product: coffee.id, amount: 3, price: 30}).save(),
+      new Purchase({store: store.id, user: adam.id, product: beer.id, price: 10}).save(),
+      new Purchase({store: store.id, user: adam.id, product: coffee.id, price: 20}).save(),
+      new Purchase({store: store.id, user: eve.id, product: coffee.id, price: 30}).save(),
     ]))
     .then(() =>
-      new Purchase({store: store.id, user: eve.id, product: coffee.id, amount: 4, price: 40, time: yesterday}).save()));
+      new Purchase({store: store.id, user: eve.id, product: coffee.id, price: 40, time: yesterday}).save()));
   after(() => clean());
   describe('GET /products', () => {
     it('should GET products (admin)', () =>
@@ -303,10 +303,9 @@ describe('Product & Purchases', () => {
         expect(res.body.purchases).to.be.an('array').with.lengthOf(2)
             .and.have.deep.property('[0].user').to.deep.equal(eve.toJSON());
         let purchase = res.body.purchases[0];
-        expect(purchase).to.have.all.keys('_id', 'user', 'store', 'product', 'amount', 'price', 'time');
+        expect(purchase).to.have.all.keys('_id', 'user', 'store', 'product', 'price', 'time');
         expect(purchase).to.have.deep.property('store.name', store.name);
         expect(purchase).to.have.deep.property('product.name', coffee.name);
-        expect(purchase).to.have.property('amount').above(0);
         expect(purchase).to.have.property('price').above(0);
         expect(new Date(purchase.time)).to.be.afterDate(yesterday);
       }));
@@ -317,8 +316,8 @@ describe('Product & Purchases', () => {
       .send()
       .then(res => {
         expect(res).to.have.status(200);
-        expect(res.body.purchases).to.have.deep.property('[0].amount', 3);
-        expect(res.body.purchases).to.have.deep.property('[1].amount', 4);
+        expect(res.body.purchases).to.have.deep.property('[0].price', 30);
+        expect(res.body.purchases).to.have.deep.property('[1].price', 40);
       }));
   });
   describe('GET /purchases/count', () => {
@@ -368,8 +367,8 @@ describe('Stores', () => {
       kwikemart.accesses.push({user: eve.id, level: 1, admin: true});
       return kwikemart.save();
     })
-    .then(() => new Purchase({store: buymore.id, user: adam.id, product: coffee.id, amount: 1, price: 8}).save())
-    .then(() => new Purchase({store: buymore.id, user: eve.id, product: coffee.id, amount: 2, price: 10}).save()));
+    .then(() => new Purchase({store: buymore.id, user: adam.id, product: coffee.id, price: 8}).save())
+    .then(() => new Purchase({store: buymore.id, user: eve.id, product: coffee.id, price: 10}).save()));
   after(() => clean());
 
   describe('GET /stores', () => {
@@ -386,7 +385,6 @@ describe('Stores', () => {
         expect(store).to.have.property('debt', 8);
         expect(store).to.have.property('admin', true);
         expect(store.purchases).to.have.property('count', 1);
-        expect(store.purchases).to.have.property('products', 1);
         expect(new Date(store.purchases.latest)).to.be.afterDate(yesterday);
       }));
     it('should GET stores (mixed access types)', () =>
@@ -435,10 +433,9 @@ describe('Stores', () => {
       .then(res => {
         expect(res).to.have.status(200);
         expect(res.body).to.contain.all.keys('_id', 'name', 'purchases');
-        expect(res.body).to.have.property('debt', 20);
+        expect(res.body).to.have.property('debt', 10);
         expect(res.body).to.have.property('admin', false);
         expect(res.body.purchases).to.have.property('count', 1);
-        expect(res.body.purchases).to.have.property('products', 2);
         expect(new Date(res.body.purchases.latest)).to.be.afterDate(yesterday);
       }));
   });
@@ -474,7 +471,7 @@ describe('Stores', () => {
         expect(res).to.have.status(200);
         expect(res.body.users).to.be.an('array').with.lengthOf(2);
         expect(res.body.users[0]).to.contain.all.keys('_id', 'name', 'email', 'access', 'purchases');
-        expect(res.body.users[0].purchases).to.contain.all.keys('count', 'products', 'latest')
+        expect(res.body.users[0].purchases).to.contain.all.keys('count', 'latest')
       }));
   });
   describe('GET /stores/:id/accesses', () => {
@@ -858,10 +855,9 @@ describe('Stores', () => {
         expect(res.body.purchases).to.be.an('array').with.lengthOf(2)
             .and.have.deep.property('[0].user').to.deep.equal(eve.toJSON());
         let purchase = res.body.purchases[0];
-        expect(purchase).to.have.all.keys('_id', 'user', 'store', 'product', 'amount', 'price', 'time');
+        expect(purchase).to.have.all.keys('_id', 'user', 'store', 'product', 'price', 'time');
         expect(purchase).to.have.deep.property('store.name', buymore.name);
         expect(purchase).to.have.deep.property('product.name', coffee.name);
-        expect(purchase).to.have.property('amount').above(0);
         expect(purchase).to.have.property('price').above(0);
         expect(new Date(purchase.time)).to.be.afterDate(yesterday);
       }));
@@ -923,11 +919,10 @@ describe('Stores', () => {
       .send({product: coffee.id})
       .then(res => {
         expect(res).to.have.status(201);
-        expect(res.body).to.have.all.keys('_id', 'user', 'store', 'product', 'amount', 'price', 'time');
+        expect(res.body).to.have.all.keys('_id', 'user', 'store', 'product', 'price', 'time');
         expect(res.body).to.have.deep.property('store._id', buymore.id);
         expect(res.body).to.have.deep.property('user._id', eve.id);
         expect(res.body).to.have.deep.property('product._id', coffee.id);
-        expect(res.body).to.have.property('amount', 1);
         expect(res.body).to.have.property('price', 4);
         expect(new Date(res.body.time)).to.be.afterDate(yesterday);
       }));
@@ -935,14 +930,13 @@ describe('Stores', () => {
       chai.request(server)
       .post(`/api/v1/stores/${buymore.id}/purchases`)
       .set('Authorization', jwtFor(adam))
-      .send({product: coffee.id, user: eve.id, amount: 2, price: 6})
+      .send({product: coffee.id, user: eve.id, price: 6})
       .then(res => {
         expect(res).to.have.status(201);
-        expect(res.body).to.have.all.keys('_id', 'user', 'store', 'product', 'amount', 'price', 'time');
+        expect(res.body).to.have.all.keys('_id', 'user', 'store', 'product', 'price', 'time');
         expect(res.body).to.have.deep.property('store._id', buymore.id);
         expect(res.body).to.have.deep.property('user._id', eve.id);
         expect(res.body).to.have.deep.property('product._id', coffee.id);
-        expect(res.body).to.have.property('amount', 2);
         expect(res.body).to.have.property('price', 6);
         expect(new Date(res.body.time)).to.be.afterDate(yesterday);
       }));
@@ -953,11 +947,10 @@ describe('Stores', () => {
       .send({product: pizza.id})
       .then(res => {
         expect(res).to.have.status(201);
-        expect(res.body).to.have.all.keys('_id', 'user', 'store', 'product', 'amount', 'price', 'time');
+        expect(res.body).to.have.all.keys('_id', 'user', 'store', 'product', 'price', 'time');
         expect(res.body).to.have.deep.property('store._id', buymore.id);
         expect(res.body).to.have.deep.property('user._id', adam.id);
         expect(res.body).to.have.deep.property('product._id', pizza.id);
-        expect(res.body).to.have.property('amount', 1);
         expect(res.body).to.have.property('price', 9);
         expect(new Date(res.body.time)).to.be.afterDate(yesterday);
       }));
@@ -968,17 +961,16 @@ describe('Stores', () => {
       .send({product: 'Custom', user: eve.id, price: 8, time: day_before_yesterday})
       .then(res => {
         expect(res).to.have.status(201);
-        expect(res.body).to.have.all.keys('_id', 'user', 'store', 'note', 'amount', 'price', 'time');
+        expect(res.body).to.have.all.keys('_id', 'user', 'store', 'note', 'price', 'time');
         expect(res.body).to.have.deep.property('store._id', buymore.id);
         expect(res.body).to.have.deep.property('user._id', eve.id);
         expect(res.body).to.have.property('note', 'Custom');
-        expect(res.body).to.have.property('amount', 1);
         expect(res.body).to.have.property('price', 8);
         expect(new Date(res.body.time)).to.be.beforeDate(yesterday);
       }));
   });
   describe('DELETE /stores/:id/purchases/:id', () => {
-    let purchase = new Purchase({store: buymore.id, user: eve.id, product: beer.id, amount: 2, price: 6});
+    let purchase = new Purchase({store: buymore.id, user: eve.id, product: beer.id, price: 6});
     before(() => purchase.save());
     it('should not DELETE unexisting store purchase', () =>
       chai.request(server)

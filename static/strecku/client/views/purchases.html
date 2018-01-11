@@ -2,10 +2,8 @@
   <md-list-item class="md-table-row-header" flex>
     <small flex="50">Product</small>
     <div flex="50" class="align-right" layout>
-      <small flex="20" hide-xs>Amount</small>
-      <small flex="20" hide-gt-xs>Amt.</small>
-      <small flex="30">Total</small>
-      <small flex="50">Time</small>
+      <small flex="40">Total</small>
+      <small flex="60">Time</small>
     </div>
   </md-list-item>
   <md-divider></md-divider>
@@ -22,9 +20,8 @@
           <p>{{purchase.store.name}}</p>
         </div>
         <div flex="50" class="md-list-item-text align-right" layout>
-          <p flex="20">{{purchase.amount}}st</p>
-          <p flex="30">{{purchase.amount * purchase.price | currency:'kr':0 }}</p>
-          <p flex="50">{{purchase.time | dynamicDate}} {{purchase.time | date:'shortTime'}}</p>
+          <p flex="40">{{purchase.price | currency:'kr':0 }}</p>
+          <p flex="60">{{purchase.time | dynamicDate}} {{purchase.time | date:'shortTime'}}</p>
         </div>
       </md-list-item>
     </md-list>

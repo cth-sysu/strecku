@@ -115,9 +115,7 @@ angular.module('strecku.terminal', [
         }
         // Action implementations
         function buyProduct(user, product){
-            return $http.post(`/api/v1/stores/this/purchases`, {
-                user, product, amount: 1
-            });
+            return $http.post(`/api/v1/stores/this/purchases`, {user, product});
         };
         function addCode(target, code){
             $scope.codeConfirm = code;

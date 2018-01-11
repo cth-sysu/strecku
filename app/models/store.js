@@ -81,7 +81,6 @@ StoreSchema.methods.summary = function(user, summary) {
     debt: summary.total || 0,
     purchases: {
       count: summary.count || 0,
-      products: summary.amount || 0,
       latest: new Date(summary.latest || 0)
     },
     admin: this.accesses.find(access => access.user.equals(user)).admin

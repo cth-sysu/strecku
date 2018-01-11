@@ -159,9 +159,8 @@ angular.module('strecku.client', [
     .then(res => {
       let purchase = res.data;
       $rootScope.$broadcast('purchases', purchase);
-      $scope.store.debt += (purchase.amount * purchase.price);
+      $scope.store.debt += purchase.price;
       $scope.store.purchases.count++;
-      $scope.store.purchases.amount += purchase.amount;
       const time_since_last_ms = new Date(purchase.time) - new Date($scope.store.purchases.latest);
       if (!product.image && $mdMedia('xs') && time_since_last_ms > 15*60*1000) {
         queryImageCrowdsourcing();

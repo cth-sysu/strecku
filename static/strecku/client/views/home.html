@@ -24,12 +24,12 @@
       <div ng-hide="recentpurchases.length" layout="row" layout-align="center">No purchases</div>
       <md-list-item class="md-table-row md-2-line animated" ng-repeat="purchase in recentpurchases | orderBy:'time':1 | limitTo:5">
         <div flex="100" class="md-list-item-text">
-          <h3><b>{{purchase.product.name || purchase.note}}</b><span class="md-caption" ng-if="purchase.amount > 1"> (x{{purchase.amount}})</span class="md-caption"></h3>
+          <h3><b>{{purchase.product.name || purchase.note}}</b></h3>
           <p>({{purchase.store.name}})</p>
         </div>
         <div class="md-list-item-text" layout="row" layout-align="end">
           <h3>
-            <span class="md-body-2">{{purchase.amount * purchase.price | currency:'kr':0 }}</span>&emsp;
+            <span class="md-body-2">{{purchase.price | currency:'kr':0 }}</span>&emsp;
             <span class="md-caption">{{purchase.time | dynamicDate}}</span>
             <span class="md-body-1">{{purchase.time | date:'shortTime'}}</span>
           </h3>
