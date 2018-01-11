@@ -1,0 +1,33 @@
+<md-list class="md-dense" flex>
+  <md-list-item class="md-3-line" ng-repeat="product in products">
+    <img product-image="product._id" class="md-avatar" alt="{{product.name}}"
+        onerror="this.src='/images/product-fallback.png'"/>
+    <div class="md-list-item-text">
+      <h3>{{product.name}}</h3>
+      <small ng-if="product.metadata.systembolaget">
+        {{product.metadata.systembolaget.Volymiml | volume}} {{product.metadata.systembolaget.Forpackning}}
+      </small>
+      <p>
+        <small ng-if="product.pricelevels.length == 1">{{product.pricelevels[0] | currency:'kr':0}}</small>
+        <small ng-if="product.pricelevels.length >= 2">{{product.pricelevels[1] | currency:'kr':0}} - {{100 * (1 - (product.pricelevels[0] / product.pricelevels[1])) | number:0}}% discountable</small>
+      </p>
+    </div>
+    <md-menu class="md-secondary">
+      <md-button class="md-icon-button">
+        <md-icon md-menu-origin>more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="2">
+        <md-menu-item>
+          <md-button ng-click="edit(product, $event)" class="md-exclude">
+            <md-icon>edit</md-icon>Edit
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="remove(product, $event)" class="md-exclude">
+            <md-icon>close</md-icon>Remove
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </md-list-item>
+</md-list>

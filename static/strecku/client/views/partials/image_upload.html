@@ -1,0 +1,10 @@
+<md-toast>
+  <span class="md-toast-text" flex>Would you grab a picture of {{ctrl.product.name}}?</span>
+  <md-button class="md-primary md-hue-3 md-action md-highlight" ng-click="ctrl.select()" md-ink-ripple>
+    <md-icon>photo_camera</md-icon>
+  </md-button>
+  <md-button class="md-primary md-action md-highlight" ng-click="ctrl.hide()">
+    <md-icon>close</md-icon>
+  </md-button>
+  <input type="file" accept="image/*" id="capture" capture="camera" class="ng-hide">
+</md-toast>

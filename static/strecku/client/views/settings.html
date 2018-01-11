@@ -1,0 +1,56 @@
+<div ng-init="name = user.name; email = user.email;" layout layout-wrap layout-padding>
+  <form name="profileForm" novalidate ng-init="init()" flex="100" flex-gt-xs="50"
+      ng-submit="profileForm.$valid && update(name, email)">
+    <h3 class="md-subhead">Account</h3>
+    <md-input-container flex class="md-block">
+      <label>Name</label>
+      <input type="text" name="name" ng-model="name" ng-minlength="1">
+      <div ng-messages="profileForm.name.$error">
+        <div ng-message="minlength">Name too short</div>
+      </div>
+    </md-input-container>
+    <md-input-container flex class="md-block">
+      <label>Email</label>
+      <input type="email" required name="email" ng-model="email" ng-disabled="emailChangeRequested">
+      <div ng-messages="profileForm.email.$error">
+        <div ng-message="required">Email required</div>
+        <div ng-message="email">Not a valid email</div>
+      </div>
+    </md-input-container>
+    <div layout="row" layout-align="end">
+      <md-button type="submit" class="md-raised">Save</md-button>
+    </div>
+  </form>
+
+  <form name="passwordForm" novalidate flex="100" flex-gt-xs="50" ng-submit="passwordForm.$valid && updatePassword(pwdData)">
+    <h3 class="md-subhead">Password</h3>
+    <md-input-container flex class="md-block">
+      <label>Old password</label>
+      <input type="password" required name="old" ng-model="pwdData.old" ng-change="passwordForm.old.$setValidity('incorrect', null)">
+      <div ng-messages="passwordForm.old.$error">
+        <div ng-message="required">Old password required</div>
+        <div ng-message="incorrect">Password incorrect</div>
+      </div>
+    </md-input-container>
+    <md-input-container flex class="md-block">
+      <label>Password</label>
+      <input type="password" required name="password" ng-model="pwdData.password" ng-pattern="pwdData.old" negate>
+      <div ng-messages="passwordForm.password.$error">
+        <div ng-message="required">Password required</div>
+        <div ng-message="pattern">New password must differ</div>
+      </div>
+    </md-input-container>
+    <md-input-container flex class="md-block">
+      <label>Confirm password</label>
+      <input type="password" required name="confirm" ng-model="pwdData.confirm" ng-pattern="pwdData.password">
+      <div ng-messages="passwordForm.confirm.$error">
+        <div ng-message="required">Password confirmation required</div>
+        <div ng-message="pattern">Passwords do not match</div>
+      </div>
+    </md-input-container>
+    <div layout="row" layout-align="end">
+      <md-button class="md-caption" ng-click="forgotPassword()">Forgot your password?</md-button>
+      <md-button type="submit" class="md-raised">Save</md-button>
+    </div>
+  </form>
+</div>

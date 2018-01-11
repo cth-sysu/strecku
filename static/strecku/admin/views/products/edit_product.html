@@ -1,0 +1,30 @@
+<md-dialog>
+  <form name="productForm" novalidate ng-submit="productForm.$valid && 
+      save(price, discount)">
+    <md-dialog-content class="md-dialog-content">
+      <h3>
+        {{product.name}}
+        <span ng-show="product.metadata.systembolaget" class="md-subhead">
+          - {{product.metadata.systembolaget.Volymiml | volume}} {{product.metadata.systembolaget.Forpackning}} ({{product.metadata.systembolaget.Prisinklmoms + product.metadata.systembolaget.Pant | currency:'kr'}})
+        </span>
+      </h3>
+
+      <md-input-container>
+        <label>Price</label>
+        <input type="number" name="price" ng-model="price" required>
+        <div ng-messages="productForm.price.$error" role="alert">
+          <div ng-message="required">Price required</div>
+        </div>
+      </md-input-container>
+
+      <md-input-container>
+        <label>Discount (%)</label>
+        <input type="number" min="0" max="100" name="discount" ng-model="discount">
+      </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions>
+      <md-button ng-click="cancel()">Cancel</md-button>
+      <md-button type="submit">Save</md-button>
+    </md-dialog-actions>
+  <form>
+</md-dialog>

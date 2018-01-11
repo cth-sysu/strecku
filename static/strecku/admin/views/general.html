@@ -1,0 +1,68 @@
+<div ng-init="name = store.name" layout-padding class="exclude">
+  <form name="nameForm" novalidate flex="100" flex-gt-sm="50" flex-offset-gt-sm="25"
+      ng-submit="nameForm.$valid && save(name, store.metadata.color)">
+    <md-input-container flex class="md-block">
+      <label>Name</label>
+      <input type="text" name="name" ng-model="name" ng-minlength="3">
+      <div ng-messages="nameForm.name.$error">
+        <div ng-message="minlength">Name too short</div>
+      </div>
+    </md-input-container>
+    <md-autocomplete md-floating-label="Color"
+        md-search-text="store.metadata.color"
+        md-items="color in colors | filter:store.metadata.color">
+      <span>{{color}}</span>
+    </md-autocomplete>
+    <div layout="row" layout-align="end">
+      <md-button type="submit" class="md-raised">Save</md-button>
+    </div>
+  </form>
+</div>
+<md-list id="print">
+  <md-list-item>
+    <p class="md-title">
+      <span class="exclude">Debts</span>
+      <span class="invisible">{{store.name}} - {{date | date}}</span>
+    </p>
+    <md-icon class="exclude" aria-label="Filter" ng-click="showFilter=!showFilter">search</md-icon>
+  </md-list-item>
+  <md-list-item class="exclude" ng-show="showFilter">
+    <md-input-container focus="showFilter" class="md-block" md-no-float style="margin: 0;" flex>
+      <md-icon>search</md-icon>
+      <input ng-model="filter" placeholder="Filter">
+    </md-input-container>
+  </md-list-item>
+
+  <md-list-item ng-repeat="user in users | filter:debt_filter | orderBy:'name' | filter:filter">
+    <span flex>{{user.name}}</span>
+    <strong>{{user.debt | currency:'kr'}}</strong>
+    <md-divider hide></md-divider>
+  </md-list-item>
+  <md-list-item ng-if="users" ng-hide="users.length" layout-align="center">
+    <span>No debts</span>
+  </md-list-item>
+  <div class="exclude">
+    <md-divider></md-divider>
+    <md-list-item>
+      <span flex>Total:</span>
+      <strong>{{total | currency:'kr'}}</strong>
+    </md-list-item>
+  </div>
+</md-list>
+<div layout layout-wrap>
+  <div flex="100" flex-gt-sm="33" layout layout-align="center">
+    <md-button class="md-raised" ng-click="print()">
+      <md-icon>print</md-icon>Generate summary (.pdf)
+    </md-button>
+  </div>
+  <div flex="100" flex-gt-sm="33" layout layout-align="center">
+    <md-button class="md-raised" ng-href="{{storeBackupLink}}" target="_self">
+      <md-icon>file_download</md-icon>Download store backup
+    </md-button>
+  </div>
+  <div flex="100" flex-gt-sm="33" layout layout-align="center">
+    <md-button class="md-raised" ng-href="{{purchasesBackupLink}}" target="_self">
+      <md-icon>file_download</md-icon>Download purchases list
+    </md-button>
+  </div>
+</div>

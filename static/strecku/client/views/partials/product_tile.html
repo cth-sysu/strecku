@@ -1,0 +1,8 @@
+<a href ng-click="buy($event, product)" layout-fill layout="row" md-ink-ripple="#333">
+  <md-content flex product-image="product._id" md-theme="dark" class="md-hue-2">
+    <md-grid-tile-footer class="product-tile-footer">
+      <span class="md-body-1">{{product.name}}</span>
+      <span class="md-caption">{{product.price | currency:'kr'}}</span>
+    </md-grid-tile-footer>
+  </md-content>
+</a>

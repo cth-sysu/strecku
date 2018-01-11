@@ -1,0 +1,201 @@
+md-sidenav md-list-item.md-2-line:before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  visibility: initial;
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.4), transparent);
+}
+md-sidenav md-list {
+    padding: 0;
+}
+md-sidenav md-list-item {
+  background-size:cover;
+}
+md-sidenav md-list-item._md-button-wrap.sidenav-link {
+    border-color: rgb(96,125,139);
+}
+md-sidenav md-list-item._md-button-wrap.sidenav-link>div.md-button:first-child {
+    border-color: inherit;
+}
+md-sidenav md-list-item._md-button-wrap.sidenav-link>div.md-button:first-child>.md-button:first-child {
+    border: solid;
+    border-width: 0 0 0 6px;
+    border-color: inherit;
+}
+md-sidenav md-list-item md-icon.secondary-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+md-sidenav .sidebar-footer a {
+  text-decoration: none;
+}
+@media (min-width: 600px) {
+    md-sidenav md-list-item.active {
+        background-color: rgba(0, 0, 0, 0.0980392);
+    }
+}
+md-toolbar md-input-container .md-errors-spacer {
+  display: none;
+}
+md-toolbar md-input-container.md-dark-theme:not(.md-input-invalid).md-input-focused md-icon {
+  color: rgba(255,255,255,0.7);
+}
+
+/* Product tiles */
+md-content[product-image] {
+    background-size:100%;
+    background-position: center;
+}
+md-grid-tile.ng-enter {
+    -webkit-animation: pulse 1s;
+    -moz-animation: pulse 1s;
+    -ms-animation: pulse 1s;
+    animation: pulse 1s;
+}
+md-grid-tile.ng-leave {
+    -webkit-animation-name: fadeOut;
+    -moz-animation-name: fadeOut;
+    -ms-animation-name: fadeOut;
+    animation-name: fadeOut;
+}
+md-grid-tile-footer.product-tile-footer::before {
+    content: " ";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: inherit;
+    background-position: bottom;
+    background-size: 100%;
+    /*-webkit-filter: blur(4px);*/
+}
+md-grid-tile-footer.product-tile-footer figcaption{
+    z-index: 1;
+    padding: 8px;
+    width: 100%;
+    background: rgba(0,0,0,.2);
+    /*background: rgba(0,0,0,.42);*/
+}
+md-grid-tile-footer.product-tile-footer {
+    height: auto;
+}
+
+img.md-avatar {
+    object-fit: cover;
+}
+
+.shopping-cart {
+    max-height: 306px;
+}
+.shopping-cart > md-list {
+    max-height: 160px;
+    overflow-y: scroll;
+}
+md-list-item.md-table-row.md-2-line>.md-no-style,
+md-list-item.md-table-row.md-2-line {
+    min-height: 48px;
+}
+.md-table-row > div > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+md-list-item.md-table-row-header {
+    padding: 0 16px;
+}
+md-list-item > .md-button.md-icon-button.md-offset {
+    padding: 0;
+    margin-left: -4px;
+    margin-right: 21px;
+}
+md-list-item div.align-right {
+    text-align: right;
+}
+
+md-list-item.animated.ng-enter {
+  animation: fadeInDown 0.4s;
+}
+
+md-list-item.md-2-line div.md-list-item-text h3 {
+    white-space: normal;
+}
+.secondary-button-padding {
+    padding-right: 52px;
+}
+
+@media (max-width: 599px) {
+    md-sidenav.fullwidth {
+        min-width: 100%;
+        transition: none !important;
+    }
+}
+
+.md-tooltip-list > .md-content {
+    height: auto;
+}
+
+.toolbar-title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+md-autocomplete[md-floating-label] md-input-container {
+    padding-bottom: 2px !important;
+}
+
+md-input-container div.hint {
+    color: gray;
+}
+
+md-dialog-actions md-checkbox {
+    margin-top: 16px;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+md-list.md-dense md-list-item.md-3-line > .md-no-style {
+  overflow: hidden;
+}
+
+md-list.md-dense md-list-item .md-list-item-inner md-icon.access-trait {
+  font-size: 12px;
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+}
+
+table {
+  border-collapse: collapse;
+}
+table tr {
+  border-top: 1px solid #cccccc;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+table tr th {
+  font-weight: bold;
+  border: 1px solid #cccccc;
+  text-align: left;
+  margin: 0;
+  padding: 6px 13px;
+}
+table tr td {
+  border: 1px solid #cccccc;
+  text-align: left;
+  margin: 0;
+  padding: 6px 13px;
+}
+table tr th :first-child, table tr td :first-child {
+  margin-top: 0;
+}
+table tr th :last-child, table tr td :last-child {
+  margin-bottom: 0;
+}

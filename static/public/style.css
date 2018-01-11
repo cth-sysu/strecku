@@ -1,0 +1,15 @@
+.fade.ng-enter {
+  animation: fadeInDown 250ms;
+}
+.fade.ng-leave {
+  animation: fadeOut 250ms;
+}
+md-content.small {
+  max-width: 400px;
+}
+.forgot {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  font-size: 12px;
+}

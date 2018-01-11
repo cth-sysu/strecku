@@ -1,0 +1,82 @@
+<md-dialog>
+  <form name="purchaseForm" novalidate ng-submit="purchaseForm.$valid && 
+      user && add(purchase, user._id, product ? product._id : productQuery, time.enabled && time)">
+    <md-dialog-content class="md-dialog-content">
+      <h3>Add purchase</h3>
+      <md-autocomplete md-autofocus required
+          md-input-name="user"
+          md-selected-item="user"
+          md-selected-item-change="userChanged(user)"
+          md-search-text="userQuery"
+          md-items="user in queryUsers(userQuery)"
+          md-item-text="user.name"
+          md-min-length="3"
+          md-floating-label="User">
+        <md-item-template>
+          <span md-highlight-text="userQuery" md-highlight-flags="^i">{{user.name}}</span>
+          <span class="md-caption">({{user.email}})</span>
+        </md-item-template>
+        <md-not-found>
+          No results for "{{userQuery}}"
+        </md-not-found>
+        <div ng-messages="purchaseForm.user.$error">
+          <div ng-message="required">User required</div>
+        </div>
+      </md-autocomplete>
+      <md-autocomplete required
+          md-input-name="product"
+          md-selected-item="product"
+          md-selected-item-change="productChanged(product)"
+          md-search-text="productQuery"
+          md-items="product in queryProducts(productQuery)"
+          md-item-text="product.name"
+          md-min-length="2"
+          md-floating-label="Product">
+        <md-item-template>
+          <span md-highlight-text="productQuery" md-highlight-flags="^i">{{product.name}}</span>
+          <span ng-show="product.metadata.systembolaget" class="md-caption">
+            - {{product.metadata.systembolaget.Volymiml | volume}} {{product.metadata.systembolaget.Forpackning}} ({{product.metadata.systembolaget.Prisinklmoms + product.metadata.systembolaget.Pant | currency:'kr'}})
+          </span>
+        </md-item-template>
+        <md-not-found>
+          No results for "{{productQuery}}"
+        </md-not-found>
+        <div ng-messages="$parent.product.metadata">
+          <div ng-message="systembolaget" style="color: black;">
+            {{$parent.product.metadata.systembolaget.Volymiml | volume}} {{$parent.product.metadata.systembolaget.Forpackning}} ({{$parent.product.metadata.systembolaget.Prisinklmoms + $parent.product.metadata.systembolaget.Pant | currency:'kr'}})
+          </div>
+        </div>
+        <div ng-messages="purchaseForm.product.$error">
+          <div ng-message="required">Provide a product or note</div>
+        </div>
+      </md-autocomplete>
+
+      <md-input-container>
+        <label>Amount</label>
+        <input type="number" ng-model="purchase.amount">
+      </md-input-container>
+      <md-input-container>
+        <label>Price</label>
+        <input type="number" ng-model="purchase.price">
+      </md-input-container>
+      
+      <md-switch class="md-primary" ng-model="time.enabled" aria-label="Enable date"
+          style="margin-top: 21px;">
+        {{time.enabled ? '' : 'Pick date'}}
+      </md-switch>
+      <div layout ng-show="time.enabled">
+        <md-input-container>
+          <label>Time</label>
+          <input type="time" ng-model="time.time">
+        </md-input-container>
+        <md-datepicker ng-model="time.date" style="margin-top: 15px;"
+            md-placeholder="Enter date">
+        </md-datepicker>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+      <md-button ng-click="cancel()">Cancel</md-button>
+      <md-button type="submit" ng-disabled="!purchaseForm.$valid || !user">Add</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

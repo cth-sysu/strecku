@@ -1,0 +1,33 @@
+<md-dialog>
+  <form name="accessForm" novalidate ng-submit="accessForm.$valid && 
+      user && add(user, level)">
+    <md-dialog-content class="md-dialog-content">
+      <h3>Add access</h3>
+      <md-autocomplete md-autofocus required
+          md-input-name="user"
+          md-selected-item="user"
+          md-selected-item-change="accessForm.user.$setValidity('duplicate', null)"
+          md-search-text="query"
+          md-items="user in queryUsers(query)"
+          md-item-text="user.name"
+          md-min-length="3"
+          md-floating-label="User">
+        <md-item-template>
+          <span md-highlight-text="query" md-highlight-flags="^i">{{user.name}}</span>
+          <span class="md-caption">({{user.email}})</span>
+        </md-item-template>
+        <md-not-found>
+          No results for "{{query}}"
+        </md-not-found>
+        <div ng-messages="accessForm.user.$error">
+          <div ng-message="required">Choose a user</div>
+          <div ng-message="duplicate">User has already access</div>
+        </div>
+      </md-autocomplete>
+    </md-dialog-content>
+    <md-dialog-actions>
+      <md-button ng-click="cancel()">Cancel</md-button>
+      <md-button type="submit" ng-disabled="!accessForm.$valid || !user">Add</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

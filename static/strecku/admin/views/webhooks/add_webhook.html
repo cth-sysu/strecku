@@ -1,0 +1,26 @@
+<md-dialog>
+  <form name="webhookForm" novalidate ng-submit="webhookForm.$valid && 
+      add(name, 'purchase', url, template)">
+    <md-dialog-content class="md-dialog-content" layout="column">
+      <h3>Add webhook</h3>
+      <md-input-container flex>
+        <label>Name</label>
+        <input ng-model="name">
+      </md-input-container>
+      <md-input-container flex>
+        <label>Url</label>
+        <input type="url" ng-model="url">
+      </md-input-container>
+      <md-input-container flex>
+        <label>Template</label>
+        <textarea ng-model="template" rows="3"></textarea>
+        <div class="hint">Projects the purchase onto this json object before sent to webhook. Use {{}<!>} syntax to project purchase attributes. A typical purchase object looks like this:</div>
+        <pre class="hint">{{example|json:2}}</pre>
+      </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions>
+      <md-button ng-click="cancel()">Cancel</md-button>
+      <md-button type="submit" ng-disabled="!webhookForm.$valid">Add</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

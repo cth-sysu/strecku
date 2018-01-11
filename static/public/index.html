@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <base href="/">
+    <title>Login</title>
+    
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.min.css">
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-animate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-aria.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-messages.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.min.js"></script>
+
+    <script src="module.js"></script>
+    <script type="text/javascript">
+    angular.module('app')
+    .controller('FormCtrl', function($scope, $location) {
+        if ($location.search().error) {
+          $scope.$error = {};
+          $scope.$error[$location.search().error] = true;
+        }
+    });
+    </script>
+</head>
+<body ng-app="app" layout="row" layout-align="center center" style="overflow:hidden">
+    <md-content layout-padding flex style="max-width:400px; overflow:visible">
+        <form method="post" action="/login" ng-controller="FormCtrl">
+            <md-input-container class="md-block">
+                <label>Email</label>
+                <input name="username" ng-model="username">
+                <div ng-messages="$error" ng-show="$error" role="alert">
+                    <div ng-message="login">Password incorrect</div>
+                    <div ng-message="reset">Account not found</div>
+                    <div ng-message="token">Token invalid</div>
+                    <div ng-message="activation">Could not activate account</div>
+                    <div ng-message="update">Could not update account</div>
+                </div>
+            </md-input-container>
+            <md-input-container ng-if="username.length" class="md-block fade">
+                <label>Password</label>
+                <input type="password" name="password">
+            </md-input-container>
+            <div layout="row" layout-align="center">
+                <md-button type="submit" class="md-primary">Login</md-button>
+            </div>
+            <md-button class="md-primary md-hue-1 forgot" ng-href="/forgot?username={{username}}"
+                    target="_self" aria-label="Forgot password">
+                Forgot password
+            </md-button>
+        </form>
+    </md-content>
+</body>
+</html>
