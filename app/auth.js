@@ -21,7 +21,10 @@ function local_validate(email, password, done) {
 }
 passport.use('local-user', new LocalStrategy(local_validate));
 
-const jwt_from_request = (req) => (req.signedCookies || {}).jwt_session || req.get('authorization');
+const jwt_from_request = (req) => {
+  return (req.signedCookies || {}).jwt_session || req.get('authorization') ||
+      (req.body || {}).authorization;
+};
 const jwt_options = {
   secretOrKey: config.secret,
   jwtFromRequest: jwt_from_request,
