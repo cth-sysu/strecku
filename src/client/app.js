@@ -139,6 +139,8 @@ angular.module('strecku.client', [
     if (!store.metadata.swish) {
       return '';
     }
+    const name = $scope.user ? $scope.user.name : '';
+    const message = `${store.name}: ${name}`;
     return encodeURI(JSON.stringify({
       version: 1,
       payee: {
@@ -150,7 +152,7 @@ angular.module('strecku.client', [
         editable: false
       },
       message: {
-        value: store.name +' streckskuld',
+        value: message.substr(0, 50),
         editable: true
       }
     }));
