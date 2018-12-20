@@ -1,0 +1,21 @@
+#!/bin/bash
+url="192.168.1.3:5100"
+read code
+[[ -z $code ]] && exit
+res=$(curl --header "authorization: $TOKEN" "$url/api/v1/codes/$code" 2> /dev/null)
+if [[ $(echo $res | jq 'has("user")') == true ]]; then
+  user=$(echo $res | jq -r '.user._id')
+  res=$(curl --header "authorization: $TOKEN" "$url/api/v1/products?user=$user" 2> /dev/null)
+  product=$(echo $res | jq -r '.products[0]._id')
+  curl --data "user=$user&product=$product" --header "authorization: $TOKEN" "$url/api/v1/purchases?user=$id" | jq '.'
+elif [[ $(echo $res | jq 'has("product")') == true ]]; then
+  echo $(echo $res | jq -r '.product.name')
+else
+  res=$(curl --header "authorization: $TOKEN" "$url/api/v1/purchases?limit=1" 2> /dev/null)
+  if [[ $(echo $res | jq -r '.purchases | length') > 0 ]]; then
+    user=$(echo $res | jq -r '.purchases[0].user._id')
+    curl --data "code=$code" --header "authorization: $TOKEN" "$url/api/v1/users/$user/codes"
+    name=$(echo $res | jq -r '.purchases[0].user.name')
+    echo "$code added for $name"
+  fi
+fi

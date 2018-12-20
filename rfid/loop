@@ -1,0 +1,5 @@
+#!/bin/bash
+source ../config/rfid.sh
+while read code; do
+  echo $code | bash ./buy
+done
