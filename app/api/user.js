@@ -25,7 +25,7 @@ api.route('/tokens')
   new Token({type, capacity}).save()
   .then(doc => jwt.sign(doc.id, config.secret))
   .then(token => `${config.server}/signup?token=${token}`)
-  .then(link => send_mail.userInvite(capacity, {to: email}, {link, capacity}))
+  .then(link => send_mail.userInvite(email, link, capacity))
   .then(() => res.status(201).redirect('/invite?success'))
   .catch(err => next(err));
 });

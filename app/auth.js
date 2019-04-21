@@ -101,7 +101,7 @@ const auth = {
     new Token({type: 'Recover', capacity: 1, data: id}).save()
     .then(token => jwt.sign(token.id, config.secret, {issuer: 'strecku'}))
     .then(token => `${config.server}/recover?token=${token}`)
-    .then(link => send_mail.passwordReset({ to: email }, { link })),
+    .then(link => send_mail.passwordReset(email, link)),
   recover: (req, res, next) =>
     User.findById(req.token.data).exec()
     .then(user => user || Promise.reject(500))

@@ -31,7 +31,7 @@ api.route('/signup')
   .then(passwordhash => jwt.sign({name, email, passwordhash}, config.secret))
   .then(token => {
     const link = `${config.server}/activate?token=${token}`;
-    return send_mail.userActivate({to: email}, {link})
+    return send_mail.userActivate(email, link)
     .then(() => req.token.consume(email, token));
   })
   .then(() => res.redirect('/login'))
@@ -50,7 +50,7 @@ update.put('/email', auth.authenticate, (req, res, next) => {
   const id = req.user.id;
   const token = jwt.sign({id, update: {$set: {email}}}, config.secret);
   const link = `${config.server}/confirm?token=${token}`;
-  send_mail.emailConfirm({to: email}, {link})
+  send_mail.emailConfirm(email, link)
   .then(() => res.status(204).end())
   .catch(err => next(err));
 })
