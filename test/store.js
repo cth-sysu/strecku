@@ -1,3 +1,4 @@
+const config = require('config');
 let jwt = require('jsonwebtoken');
 let mongoose = require('mongoose');
 let ObjectId = mongoose.Types.ObjectId;
@@ -20,7 +21,7 @@ chai.use(require('chai-datetime'));
 
 let jwtFor = user => {
   let payload = {type: user.constructor.modelName, id: user.id, passwordhash: user.passwordhash};
-  return jwt.sign(payload, process.env.STRECKUSECRET, {issuer: 'strecku'});
+  return jwt.sign(payload, config.secret, {issuer: 'strecku'});
 };
 
 let stringifyObjectIdInTransform = M => {
