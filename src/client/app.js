@@ -203,18 +203,52 @@ angular.module('strecku.client', [
   }
 }])
 .controller('ImageUploadCtrl', ['$http', '$mdToast', function($http, $mdToast) {
+
+  function resizeImageFile(file) {
+    return new Promise(done => {
+      const reader = new FileReader();
+      reader.onload = event => {
+        const image = new Image();
+        image.onload = () => {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = 256;
+          canvas.height = 256;
+          context.drawImage(image,
+              Math.max(0, (image.width - image.height) / 2),
+              Math.max(0, (image.height - image.width) / 2),
+              image.width - Math.max(0, (image.width - image.height)),
+              image.height - Math.max(0, (image.height - image.width)),
+              0,
+              0,
+              canvas.width,
+              canvas.height
+          );
+          done(canvas.toDataURL());
+        };
+        image.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    })
+    .then(base64 => fetch(base64))
+    .then(res => res.blob())
+    .then(blob => new File([blob], 'image'));
+  }
+
   const product = this.product;
   const updateScope = this.updateImage;
   this.select = () => {
     const capture = document.getElementById('capture');
     capture.onchange = () => {
-      var data = new FormData();
-      data.append('image', capture.files[0]);
-      $http.post(`/api/v1/products/${product._id}/images/0`, data, {
-        headers: {'content-type': undefined},
-        transformRequest: angular.identity
-      })
-      .then(updateScope);
+      resizeImageFile(capture.files[0]).then(file => {
+        var data = new FormData();
+        data.append('image', file);
+        $http.post(`/api/v1/products/${product._id}/images/0`, data, {
+          headers: {'content-type': undefined},
+          transformRequest: angular.identity
+        })
+        .then(updateScope);
+      });
     };
     capture.click();
   };
