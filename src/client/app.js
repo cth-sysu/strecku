@@ -105,9 +105,14 @@ angular.module('strecku.client', [
   $scope.$on('$routeChangeStart', () => $mdSidenav('menu').close());
 }])
 .controller('ToolbarCtrl', ['$scope', 'Toolbar', ($scope, Toolbar) => $scope.toolbar = Toolbar])
-.controller('MainCtrl', ['$scope', '$mdSidenav', '$location', '$http', '$cookies', '$mdMedia', '$mdDialog', ($scope, $mdSidenav, $location, $http, $cookies, $mdMedia, $mdDialog) => {
+.controller('MainCtrl', ['$scope', '$mdSidenav', '$window', '$location', '$http', '$cookies', '$mdMedia', '$mdDialog', ($scope, $mdSidenav, $window, $location, $http, $cookies, $mdMedia, $mdDialog) => {
   $http.get('/api/v1/users/me')
-  .then(res => $scope.user = res.data);
+  .then(res => $scope.user = res.data)
+  .catch(err => {
+    if (err.status === 401) {
+      $window.location.href = '/login';
+    }
+  });
   $http.get('/api/v1/stores')
   .then(res => {
     $scope.stores = res.data.stores;

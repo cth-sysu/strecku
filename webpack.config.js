@@ -44,19 +44,10 @@ module.exports = {
     publicPath: '/',
     contentBase: ['./static/strecku', './static/strecku/client'],
     noInfo: true,
-    proxy: {
-      '/api': 'http://localhost:5100',
-      '/admin': 'http://localhost:5100',
-      '/signup': 'http://localhost:5100',
-      '/update': 'http://localhost:5100',
-      '/activate': 'http://localhost:5100',
-      '/confirm': 'http://localhost:5100',
-    },
-    host: '0.0.0.0',
-    public: '192.168.1.3:8080'
-  },
-  // performance: {
-  //   hints: false
-  // },
-  // devtool: '#eval-source-map'
+    proxy: [{
+      context: ['/api', '/admin', '/login', '/logout', '/signup', '/update', '/activate', '/confirm'],
+      target: 'http://localhost:5100',
+    }],
+    host: '0.0.0.0'
+  }
 };
