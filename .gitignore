@@ -60,6 +60,7 @@ jspm_packages
 
 # server configuration
 config/
+!config/example.js
 
 # pm2 process manifest
 process.json
