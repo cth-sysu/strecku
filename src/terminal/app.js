@@ -1,3 +1,6 @@
+require('./codescanner');
+require('../shared/filters');
+
 angular.module('strecku.terminal', [
   'strecku.codescanner',
   'strecku.datefilter',
@@ -21,22 +24,25 @@ angular.module('strecku.terminal', [
         });
 
         // Log entries
-        $http.get('/api/v1/stores/this/purchases?limit=25')
-        .then(function(res){
-            $scope.log = res.data;
-            // Listen to new in realtime
-            StoreLog.on('purchase', (purchase) =>
-                $scope.log.push(purchase));
-        });
+        $scope.updatePurchases = () => {
+          $http.get('/api/v1/purchases?limit=25')
+          .then(function(res){
+            $scope.log = res.data.purchases;
+              // Listen to new in realtime
+              StoreLog.on('purchase', (purchase) => $scope.log.push(purchase));
+          })
+          .catch(err => console.error('err', err));
+        };
+        $scope.updatePurchases();
 
         // Additional user data
         $scope.$watch('item.user', function(user){
             if (user) $q.all([
-                $http.get(`/api/v1/stores/this/purchases?user=${user._id}&limit=5`),
-                $http.get(`/api/v1/stores/this/summary?user=${user._id}`)
+                $http.get(`/api/v1/purchases?user=${user._id}&limit=5`),
+                // $http.get(`/api/v1/stores/this/summary?user=${user._id}`)
             ]).then(function(res) {
-                $scope.item.purchases = res[0].data;
-                $scope.item.summary = res[1].data;
+                $scope.item.purchases = res[0].data.purchases;
+                // $scope.item.summary = res[1].data;
             });
         });
 
@@ -61,11 +67,13 @@ angular.module('strecku.terminal', [
             else if ($scope.item &&
                 $scope.item.user && item.product){
                 buyProduct($scope.item.user._id, item.product._id);
+              $scope.item.user = null;
             }
             // product -> user = purchase
             else if ($scope.item &&
                 $scope.item.product && item.user){
                 buyProduct(item.user._id, $scope.item.product._id);
+              $scope.item.user = null;
             }
             // Set/reset current
             else {
@@ -109,13 +117,16 @@ angular.module('strecku.terminal', [
         function timeout(){
             $scope.codeConfirm = null;
             $timeout.cancel($scope.timeout);
-            ($scope.timeout = $timeout(3000)).then(function(){
+            ($scope.timeout = $timeout(5000)).then(function(){
                 if (!$scope.codeConfirm) $scope.item = null;
             });
         }
         // Action implementations
         function buyProduct(user, product){
-            return $http.post(`/api/v1/stores/this/purchases`, {user, product});
+            return $http.post(`/api/v1/purchases`, {user, product})
+            .then(() => {
+              $scope.updatePurchases();
+            });
         };
         function addCode(target, code){
             $scope.codeConfirm = code;

@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   context: path.join(__dirname),
-  entry: {client: './src/client/app.js', admin: './src/admin/app.js'},
+  entry: {client: './src/client/app.js', admin: './src/admin/app.js', terminal: './src/terminal/app.js'},
   output: {
     filename: '[name].bundle.js',
     path: path.join(__dirname, 'static', 'strecku'),
@@ -42,10 +42,10 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     publicPath: '/',
-    contentBase: ['./static/strecku', './static/strecku/client'],
+    contentBase: ['./static/strecku', './static/strecku/terminal'],
     noInfo: true,
     proxy: [{
-      context: ['/api', '/admin', '/login', '/logout', '/signup', '/update', '/activate', '/confirm'],
+      context: ['/api', '/admin', '/login', '/logout', '/signup', '/update', '/activate', '/confirm', '/socket.io'],
       target: 'http://localhost:5100',
     }],
     host: '0.0.0.0'

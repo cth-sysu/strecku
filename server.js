@@ -86,7 +86,7 @@ client.use(express.static(__dirname + '/static/strecku/client', {index: false}))
 client.get('*', (req, res) => res.sendFile(path.join(__dirname, '/static/strecku/client', 'index.html')));
 app.use(client);
 
-const server = app.listen(5100, 'localhost');
+const server = app.listen(5100, '0.0.0.0');
 
 // Terminal socket
 require('./app/terminal')(server);

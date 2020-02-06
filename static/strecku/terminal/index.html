@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <link rel="manifest" href="manifest.json">
+  <!-- <link rel="manifest" href="manifest.json"> -->
   <base href="/">
   <title>StreckU</title>
 
@@ -27,7 +27,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-socket-io/0.7.0/socket.min.js"></script>
 
   <!-- StreckU -->
-  <!-- <script src="terminal.bundle.js"></script> -->
+  <script src="terminal.bundle.js"></script>
 
   <!-- <script src="js/app.js"></script>
   <script src="js/codescanner.js"></script>
@@ -71,7 +71,7 @@
         <div ng-show="item.product" layout="column" layout-align="start center" layout-padding
             class="pulse" ng-class="{ animated: item.product }">
             
-            <img class="item-image" ng-src="{{item.product.image}}"></img>
+            <img class="item-image" ng-src="api/v1/images/{{item.product.image}}"></img>
             
             <div style="text-align: center;">
                 <div class="md-headline">{{item.product.name}}</div>
