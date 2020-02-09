@@ -7,3 +7,19 @@ md-sidenav.md-sidenav-right {
     border-radius: 50%;
     object-fit: cover;
 }
+md-sidenav md-list-item.md-2-line {
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.2), transparent);
+}
+.user-list {
+  display: flex;
+  max-height: 400px;
+  overflow-y: scroll;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.user-list .user {
+  flex: 0 0 calc(33% - 8px);
+  height: 64px;
+  margin: 4px;
+  border-radius: 16px;
+}

@@ -49,6 +49,17 @@ api.route('/codes/:code')
   .catch(err => next(err));
 });
 
+api.route('/users')
+.get((req, res, next) => {
+  Store.populate(req.store, 'accesses.user')
+      .then(store => store.accesses.map(access => access.user))
+      .then(users => {
+        users.sort((lhs, rhs) => lhs.name.localeCompare(rhs.name));
+        res.json({ users });
+      })
+      .catch(err => next(err));
+});
+
 api.route('/users/:id/codes')
 .post((req, res, next) => {
   if (!req.body.code) {

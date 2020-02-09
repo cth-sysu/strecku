@@ -84,6 +84,21 @@
                 <span ng-if="!item.product.available">(Unavailable)</span>
             </div>
         </div>
+
+
+        <!-- Add code to user -->
+        <div ng-show="item.pendingCode" layout="column" layout-align="start center" layout-padding
+            class="pulse" ng-class="{ animated: item.pendingCode }">
+          <div style="text-align: center;">
+            <div class="md-headline">Assign '{{ item.pendingCode }}' to user:</div>
+            <div class ="user-list">
+              <button ng-repeat="user in item.users" class="user"
+                  ng-click="assignCode(item.pendingCode, user)">
+                {{ user.name }}
+              </button>
+            </div>
+          </div>
+        </div>
     </md-content>
 
     <!-- Log sidenav -->
@@ -93,7 +108,7 @@
         </md-toolbar>
         <md-content>
             <md-list>
-                <md-list-item class="md-table-row md-2-line animated"
+                <md-list-item class="md-table-row md-2-line animated" style="position: relative;"
                     ng-repeat="purchase in log | orderBy:'time':1 | limitTo:25">
                     <div flex="50" class="md-list-item-text">
                         <h3><b>{{purchase.product.name || purchase.note}}</b></h3>

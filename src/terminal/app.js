@@ -27,27 +27,11 @@ angular.module('strecku.terminal', [
         });
 
         // Log entries
-        $scope.updatePurchases = () => {
-          $http.get('/api/v1/purchases?limit=25')
-          .then(function(res){
-            $scope.log = res.data.purchases;
-              // Listen to new in realtime
-              StoreLog.on('purchase', (purchase) => $scope.log.push(purchase));
-          })
-          .catch(err => console.error('err', err));
-        };
-        $scope.updatePurchases();
-
-        // Additional user data
-        $scope.$watch('item.user', function(user){
-            if (user) $q.all([
-                $http.get(`/api/v1/purchases?user=${user._id}&limit=5`),
-                // $http.get(`/api/v1/stores/this/summary?user=${user._id}`)
-            ]).then(function(res) {
-                $scope.item.purchases = res[0].data.purchases;
-                // $scope.item.summary = res[1].data;
-            });
-        });
+        $http.get('/api/v1/purchases?limit=25').then(res => {
+          $scope.log = res.data.purchases;
+          // Listen to new in realtime
+          StoreLog.on('purchase', (purchase) => $scope.log.push(purchase));
+        })
 
         // Code scanner callback
         $scope.onCode = function(code){
@@ -81,7 +65,14 @@ angular.module('strecku.terminal', [
             // Set/reset current
             else {
                 timeout();
-                $scope.item = item;
+                if (item.type === 'user') {
+                  $http.get(`/api/v1/purchases?user=${item.user._id}&limit=5`).then(res => {
+                    item.purchases = res.data.purchases;
+                    $scope.item = item;
+                  });
+                } else {
+                  $scope.item = item;
+                }
             }
         }
         function onNull(code){
@@ -105,8 +96,19 @@ angular.module('strecku.terminal', [
                     timeout();
                 }, timeout);
             }
-            // Reset current
-            else $scope.item = null;
+            // cancel new code
+            else if ($scope.item && $scope.item.pendingCode === code){
+              $scope.item = null;
+            }
+            // new code = show list of users
+            else {
+              $http.get(`/api/v1/users`).then(res => {
+                $scope.item = {
+                  pendingCode: code,
+                  users: res.data.users,
+                };
+              });
+            }
         }
 
         // Helper functions
@@ -118,20 +120,17 @@ angular.module('strecku.terminal', [
             $scope.item.product._id == item.product._id));
         }
         function timeout(){
-            $scope.codeConfirm = null;
             $timeout.cancel($scope.timeout);
-            ($scope.timeout = $timeout(5000)).then(function(){
-                if (!$scope.codeConfirm) $scope.item = null;
+            ($scope.timeout = $timeout(5000)).then(() => {
+              $scope.item = null;
             });
         }
         // Action implementations
         function buyProduct(user, product){
-            return $http.post(`/api/v1/purchases`, {user, product})
-            .then(() => {
-              $scope.updatePurchases();
-            });
+            return $http.post(`/api/v1/purchases`, { user, product });
         };
         function addCode(target, code){
+            $timeout.cancel($scope.timeout);
             $scope.codeConfirm = code;
             return $mdDialog.show({
                 controller: () => {},
@@ -142,4 +141,9 @@ angular.module('strecku.terminal', [
                 controllerAs: 'ctrl'
             }).then(() => code);
         }
+
+        $scope.assignCode = (code, user) => {
+          $http.post(`/api/v1/users/${user._id}/codes`, { code });
+          $scope.item = null;
+        };
     }]);
