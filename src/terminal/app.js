@@ -15,7 +15,10 @@ angular.module('strecku.terminal', [
   $mdThemingProvider.theme('default').primaryPalette('blue-grey').accentPalette('grey');
   $mdThemingProvider.theme('dark').backgroundPalette('blue-grey').dark();
 }])
-.factory('StoreLog', ['socketFactory', socketFactory => socketFactory()])
+.factory('StoreLog', ['socketFactory', socketFactory => {
+  const ioSocket = io({ path: '/api/streaming/v1' });
+  return socketFactory({ ioSocket });
+}])
 .controller('MainCtrl', ['$scope', '$q', '$http', '$mdDialog', '$timeout', 'StoreLog', function($scope, $q, $http, $mdDialog, $timeout, StoreLog){
         // Get store name
         $http.get('/api/v1/stores/this')
