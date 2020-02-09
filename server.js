@@ -10,7 +10,8 @@ const passport = require('passport');
 
 const auth = require('./app/auth');
 
-mongoose.connect(config.db.url);
+mongoose.set('useCreateIndex', true);
+mongoose.connect(config.db.url, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', err => console.error('database connection error:', err));
 mongoose.Promise = Promise;
 
