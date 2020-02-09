@@ -78,6 +78,9 @@
             ng-class="{ active: active('Api') }">
           <p>Store API</p>
         </md-list-item>
+        <md-list-item ng-href="/api/v1/stores/{{store._id}}/terminal">
+          <p>Launch terminal</p>
+        </md-list-item>
       </md-list>
     </md-sidenav>
 
