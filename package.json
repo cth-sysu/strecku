@@ -8,7 +8,8 @@
     "dev": "NODE_ENV=development nodemon --watch app & webpack-dev-server --hot",
     "build:dev": "webpack",
     "build:prod": "webpack -p",
-    "test": "NODE_ENV=test mocha"
+    "test": "NODE_ENV=test mocha",
+    "reload": "pm2 reload strecku"
   },
   "dependencies": {
     "JSONStream": "^1.3.5",
