@@ -6,8 +6,5 @@ module.exports = {
   mail: {
     url: `smtps://email`
   },
-  instagram: {
-    token: 'api'
-  },
   secret: 'secret'
 }

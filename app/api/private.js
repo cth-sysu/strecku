@@ -1,9 +1,6 @@
-const config = require('config');
 const express = require('express');
 const fs = require('fs');
 const multer = require('multer');
-const request = require('request');
-const JSONStream = require('JSONStream');
 const auth = require('../auth');
 
 const Image = require('../models/image');
@@ -14,24 +11,15 @@ const upload = multer({dest: '/tmp/'});
 
 api.route('/products/:id/images/:image_id')
 .get((req, res, next) => {
-  Product.findById(req.params.id).exec()
+  return Product.findById(req.params.id).exec()
   .then(product => product || Promise.reject(404))
   .then(product => {
     if (product.image) {
       return res.redirect(`/api/v1/images/${product.image}`);
     }
-    const words = product.name.split(' ');
-    let name = '', i = 0;
-    while (name.length < 6 && i < words.length) {
-      name += words[i++];
-    }
-    const tag = encodeURIComponent(name.replace(/[^0-9a-zåäöA-ZÅÄÖ_]/g, ''));
-    const instagram = `https://api.instagram.com/v1/tags/${tag}/media/recent?count=1&access_token=${config.instagram && config.instagram.token}`;
-    request(instagram)
-        .pipe(JSONStream.parse('data.*', data => data.images.low_resolution.url))
-        .on('data', url => res.redirect(url))
-        .on('end', () => res.headersSent || res.end());
-  });
+    return res.status(204).end();
+  })
+  .catch(next);
 })
 .post(upload.single('image'), (req, res, next) => {
   Product.findById(req.params.id).exec()
