@@ -58,6 +58,7 @@ const StoreSchema = new mongoose.Schema(
     {
       name: {type: String, required: true},
       metadata: {type: {}, required: true, default: {}},
+      purchaseConfirmationThreshold: {type: Number, required: true, min: 0, default: 30},
       range: {type: [ItemSchema], default: []},
       accesses: {type: [AccessSchema], default: []},
       webhooks: {type: [WebhookSchema], default: []}
