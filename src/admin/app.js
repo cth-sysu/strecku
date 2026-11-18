@@ -100,8 +100,8 @@ angular.module('strecku.admin', [
   AddAction.config(false);
   // edit details
   $scope.colors = Object.keys($mdColorPalette);
-  $scope.save = (name, color) =>
-    $http.put(`/api/v1/stores/${$routeParams.store_id}`, {name, color})
+  $scope.save = (name, color, purchaseConfirmationThreshold) =>
+    $http.put(`/api/v1/stores/${$routeParams.store_id}`, {name, color, purchaseConfirmationThreshold})
     .then(res => $scope.store.name = name);
   // get users
   $http.get(`/api/v1/stores/${$routeParams.store_id}/users`)

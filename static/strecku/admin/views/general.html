@@ -1,6 +1,6 @@
 <div ng-init="name = store.name" layout-padding class="exclude">
   <form name="nameForm" novalidate flex="100" flex-gt-sm="50" flex-offset-gt-sm="25"
-      ng-submit="nameForm.$valid && save(name, store.metadata.color)">
+      ng-submit="nameForm.$valid && save(name, store.metadata.color, store.purchaseConfirmationThreshold)">
     <md-input-container flex class="md-block">
       <label>Name</label>
       <input type="text" name="name" ng-model="name" ng-minlength="3">
@@ -13,6 +13,11 @@
         md-items="color in colors | filter:store.metadata.color">
       <span>{{color}}</span>
     </md-autocomplete>
+    <md-input-container flex class="md-block">
+      <label>Confirm purchases above (kr)</label>
+      <input type="number" name="purchaseConfirmationThreshold"
+          ng-model="store.purchaseConfirmationThreshold" min="0" step="any" required>
+    </md-input-container>
     <div layout="row" layout-align="end">
       <md-button type="submit" class="md-raised">Save</md-button>
     </div>

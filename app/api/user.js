@@ -286,6 +286,14 @@ store_admin_api.route('/')
   if (!Object.keys(req.body).length) {
     return next(400);
   }
+  if (Object.prototype.hasOwnProperty.call(req.body, 'purchaseConfirmationThreshold')) {
+    const threshold = req.body.purchaseConfirmationThreshold;
+    if (!Number.isFinite(threshold) || threshold < 0) {
+      return next(400);
+    }
+    req.store.purchaseConfirmationThreshold = threshold;
+    delete req.body.purchaseConfirmationThreshold;
+  }
   if (req.body.name) {
     req.store.name = req.body.name;
     delete req.body.name;

@@ -168,18 +168,16 @@ angular.module('strecku.client', [
   $http.get(`/api/v1/stores/${$scope.store._id}/products`)
   .then(res => $scope.products = res.data.products);
   // Purchase functions
-  const price_threshold = 15;
   $scope.buy = ($event, product) => {
-    if (product.price < price_threshold){
-      sendPurchase(product);
-    }
-    else {
+    if (product.price > $scope.store.purchaseConfirmationThreshold) {
       $mdDialog.show($mdDialog.confirm()
       .title(product.name)
       .textContent(`Buy ${product.name} for ${$filter('currency')(product.price,'kr')}?`)
       .ok('Buy').cancel('Cancel')
       .targetEvent($event))
       .then(() => sendPurchase(product));
+    } else {
+      sendPurchase(product);
     }
   };
   function sendPurchase(product) {
